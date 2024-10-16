@@ -64,9 +64,9 @@ def plot_scores(ovrl_df, rnd_df, metric, save_path, show_approx_curve=True):
         plt.plot(x_smooth, ovrl_fit(x_smooth), '--', color='blue', label='OVRL approx curve')
         plt.plot(x_smooth, rnd_fit(x_smooth), '--', color='red', label='RND approx curve')
 
-    plt.xlabel('Steps (k)')
-    plt.ylabel(f'{metric} Score')
-    plt.title(f'{metric} Scores across Steps')
+    plt.xlabel('Steps (k)', fontsize=26)
+    plt.ylabel(f'{metric} Score', fontsize=26)
+    plt.title(f'{metric} Scores across Steps', fontsize=26)
     plt.legend()
 
     # Save and show the plot
@@ -94,9 +94,9 @@ def main():
         plt.plot(ovrl_df['step'], ovrl_df[metric], 'o-', label=f'OVRL {metric}', color=colors[idx])
         plt.plot(rnd_df['step'], rnd_df[metric], 'o-', label=f'RND {metric}', linestyle='dashed', color=colors[idx])
 
-    plt.xlabel('Steps (k)')
-    plt.ylabel('Score')
-    plt.title('DNSMOS Scores across Steps (OVRL vs RND)')
+    plt.xlabel('Steps (k)', fontsize=20)
+    plt.ylabel('Score', fontsize=20)
+    plt.title('DNSMOS Scores across Steps (OVRL vs RND)', fontsize=20)
     plt.legend()
 
     # Save and show the combined plot
