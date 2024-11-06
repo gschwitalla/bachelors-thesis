@@ -14,7 +14,7 @@ def main(file_path):
     df = pd.read_csv(file_path)
 
     # Count total number of samples
-    thresholds = [2, 3, 4]
+    thresholds = [2, 2.5, 3, 3.5, 3.75, 4]
     ovrl_counts = count_under_threshold(df, 'OVRL', thresholds)
     sig_counts = count_under_threshold(df, 'SIG', thresholds)
     bak_counts = count_under_threshold(df, 'BAK', thresholds)

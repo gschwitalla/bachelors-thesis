@@ -11,9 +11,9 @@ def create_csv_splits(input_csv, cutoff):
     cutoff_count = int(len(df) * (cutoff / 100))
 
     # Sort by OVRL, SIG, BAK
-    df_sorted_ovrl = df.sort_values(by='OVRL', ascending=False).head(cutoff_count)
-    df_sorted_sig = df.sort_values(by='SIG', ascending=False).head(cutoff_count)
-    df_sorted_bak = df.sort_values(by='BAK', ascending=False).head(cutoff_count)
+    df_sorted_ovrl = df.sort_values(by='MOS_OVRL', ascending=False).head(cutoff_count)
+    df_sorted_sig = df.sort_values(by='MOS_SIG', ascending=False).head(cutoff_count)
+    df_sorted_bak = df.sort_values(by='MOS_NOISE', ascending=False).head(cutoff_count)
 
     # Randomly select {cutoff} percentage of samples
     df_random = df.sample(n=cutoff_count, random_state=1)

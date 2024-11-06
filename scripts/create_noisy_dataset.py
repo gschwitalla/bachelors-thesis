@@ -22,7 +22,7 @@ sr = 16000
 
 def load_speech_files_from_csv(csv_file):
     data = pd.read_csv(csv_file)
-    speech_files = data.iloc[:, 1].tolist()
+    speech_files = data.iloc[:, 0].tolist()
     return speech_files
 
 if __name__ == '__main__':
