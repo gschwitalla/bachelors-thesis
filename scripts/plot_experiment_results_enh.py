@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Directory containing the .txt files and output directory for plots
-ovrl_directory = 'G:/Uni/Git/bachelors-thesis/results/LRS3_enh_OVRL_50/'
-output_directory = 'G:/Uni/Git/bachelors-thesis/plots/LRS3/enhancement-exp'
+ovrl_directory = 'G:/Uni/Git/bachelors-thesis/results/LRS3_SIGMOS/'
+output_directory = 'G:/Uni/Git/bachelors-thesis/plots/LRS3/SIGMOS'
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_directory, exist_ok=True)

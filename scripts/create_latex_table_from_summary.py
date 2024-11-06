@@ -1,9 +1,8 @@
 import pandas as pd
 import os
-import re
 
 # Directory containing the .txt files
-directory = 'G:\\Uni\\Git\\bachelors-thesis\\results\\LRS3_enh_OVRL_50'  # Replace with your file path
+directory = 'G:\\Uni\\Git\\bachelors-thesis\\results\\LRS3_SIGMOS'
 
 # List of training step counts as specified
 steps = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
@@ -13,7 +12,7 @@ summary_data = {}
 
 # Loop through each step, read the respective file, and extract mean/std values
 for step in steps:
-    filename = f"{step}k_summary.txt"
+    filename = f"sigmos_{step}k_summary.txt"
     filepath = os.path.join(directory, filename)
 
     if os.path.exists(filepath):
@@ -30,30 +29,32 @@ for step in steps:
             for metric in df.index
         }
 
-# Create a LaTeX table
-latex_table = "\\begin{table}[h]\n\\centering\n\\begin{tabular}{l" + "c" * len(steps) + "}\n"
-latex_table += "\\hline\n"
-latex_table += "Metric "
+# Get list of metrics from the last processed DataFrame
+metrics = df.index[[2, 4, 5, 7]]]
 
-# Column headers for each step
-for step in steps:
-    latex_table += f" & {step}k"
+# Create a LaTeX table
+latex_table = "\\begin{table}[h]\n\\centering\n\\begin{tabular}{l" + "c" * len(metrics) + "}\n"
+latex_table += "\\hline\n"
+latex_table += "Step (k)"
+
+# Column headers for each metric
+for metric in metrics:
+    latex_table += f" & {metric}"
 latex_table += " \\\\\n\\hline\n"
 
-# Populate rows with metrics and their mean ± std values at each step
-metrics = df.index  # Assuming all files have the same metrics
-for metric in metrics:
-    latex_table += metric
-    for step in steps:
+# Populate rows with steps and their mean ± std values for each metric
+for step in steps:
+    latex_table += f"{step}k"
+    for metric in metrics:
         if step in summary_data and metric in summary_data[step]:
             mean, std = summary_data[step][metric]
-            latex_table += f" & {mean:.3f} ± {std:.3f}"
+            latex_table += f" & ${mean:.2f} \pm {std:.2f}$"
         else:
             latex_table += " & -"
     latex_table += " \\\\\n"
 
 # Closing the LaTeX table
-latex_table += "\\hline\n\\end{tabular}\n\\caption{Mean ± Standard Deviation across Training Steps}\n\\end{table}"
+latex_table += "\\hline\n\\end{tabular}\n\\caption{Mean ± Standard Deviation for Each Metric Across Training Steps}\n\\end{table}"
 
 # Print LaTeX table
 print(latex_table)
