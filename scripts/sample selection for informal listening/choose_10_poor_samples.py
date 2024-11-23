@@ -7,7 +7,7 @@ import subprocess
 
 remote_address = 'sppc25.informatik.uni-hamburg.de'
 username = '8schwita'
-local_destination = 'G:\\Uni\\Git\\bachelors-thesis\\samples\\LRS3_lowest_1%_OVRL\\'
+local_destination = 'G:\\Uni\\Git\\bachelors-thesis\\samples\\LRS3_lowest_1%_SIG\\'
 
 def create_ssh_client(server, user, password):
     client = paramiko.SSHClient()
@@ -32,17 +32,17 @@ def main(password):
     input_csv_file = 'G:\\Uni\\Git\\bachelors-thesis\\evaluation_results\\LRS3\\DNSMOS\\lrs3_pretrain.csv'
     df = pd.read_csv(input_csv_file)
 
-    # Ensure the OVRL column is numeric
-    df['OVRL'] = pd.to_numeric(df['OVRL'], errors='coerce')
+    # Ensure the SIG column is numeric
+    df['SIG'] = pd.to_numeric(df['SIG'], errors='coerce')
 
-    # Get cutoff OVRL value (bottom 4%)
-    cutoff_value = np.percentile(df['OVRL'].dropna(), 0.1)
+    # Get cutoff SIG value
+    cutoff_value = np.percentile(df['SIG'].dropna(), 0.2)
 
-    # Get samples with OVRL below cutoff
-    bottom_10_percent_df = df[df['OVRL'] <= cutoff_value]
+    # Get samples with SIG below cutoff
+    bottom_10_percent_df = df[df['SIG'] <= cutoff_value]
 
     # Choose 10 random filenames from previous samples
-    random_samples = bottom_10_percent_df.sample(n=10, random_state=4)
+    random_samples = bottom_10_percent_df.sample(n=10, random_state=19)
 
     ssh_client = create_ssh_client(remote_address, username, password)
 
@@ -52,11 +52,11 @@ def main(password):
     try:
         for index, row in random_samples.iterrows():
             filename = row['filename']
-            ovr_score = row['OVRL']
+            ovr_score = row['SIG']
             local_file = f"{local_destination}/{ovr_score}_{filename.split('/')[-1]}"
             try:
                 scp_client.get(filename, local_file)
-                print(f"Successfully downloaded: {filename} (OVRL: {ovr_score})")
+                print(f"Successfully downloaded: {filename} (SIG: {ovr_score})")
             except subprocess.CalledProcessError as e:
                 print(f"Failed to download: {filename}. Error: {e}")
 
@@ -65,7 +65,7 @@ def main(password):
         ssh_client.close()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Download 10 random LRS3 samples with a poor OVRL score (bottom 10%)')
+    parser = argparse.ArgumentParser(description='Download 10 random LRS3 samples with a poor SIG score (bottom 1%)')
     parser.add_argument('password', help='Remote server password')
 
     args = parser.parse_args()
